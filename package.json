@@ -10,7 +10,7 @@
     "federalist"
   ],
   "author": "Shawn Allen <shawn.allen@gsa.gov>",
-  "license": "ISC",
+  "license": "SEE LICENSE IN LICENSE.md",
   "dependencies": {
     "isomorphic-fetch": "^2.2.1"
   },
