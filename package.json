@@ -3,6 +3,9 @@
   "version": "0.3.0",
   "description": "Wait for Federalist to build your thing.",
   "main": "index.js",
+  "bin": {
+    "wait-for-federalist": "cli.js"
+  },
   "scripts": {
     "test": "mocha"
   },
