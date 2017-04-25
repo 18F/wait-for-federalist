@@ -1,11 +1,11 @@
 'use strict';
 const fetch = require('isomorphic-fetch');
 
-const MAIN_BRANCH = 'master';
+const PROD_BRANCH = 'master';
 const PROD_BASEURL = 'https://federalist-proxy.app.cloud.gov/site/';
 const PREVIEW_BASEURL = 'https://federalist.fr.cloud.gov/preview/';
 const COMMIT_PATH = 'commit.txt';
-const MAX_TRIES = 100;
+const TIMEOUT_S = 300; // 5 minutes
 const SLEEP_MS = 2000;
 
 module.exports = config => {
@@ -21,26 +21,35 @@ module.exports = config => {
 
   const repo = [config.user, config.repo].join('/').toLowerCase();
 
-  const baseURL = (config.branch === 'master')
+  const baseURL = (config.branch === PROD_BRANCH)
     ? PROD_BASEURL + repo
     : PREVIEW_BASEURL + repo + '/' + config.branch;
-
-  console.warn('testing site URL:', baseURL);
+  config.url = baseURL;
 
   const commitURL = baseURL + '/' + COMMIT_PATH;
 
-  var tries = 0;
+  console.warn('testing site URL:', baseURL);
+
+  const start = Date.now();
 
   const check = () => {
-    if (++tries >= MAX_TRIES) {
-      console.error('Failed after %d tries', MAX_TRIES);
+    const elapsed = (Date.now() - start) / 1e6;
+    if (elapsed > TIMEOUT_S) {
+      console.error('Failed after %s seconds', TIMEOUT_S);
       return process.exit(1);
     }
     // console.warn('fetching:', commitURL);
     return fetch(commitURL)
+      .catch(error => {
+        return sleep().then(check);
+      })
       .then(res => res.text())
       .then(body => {
-        return body.trim() === config.sha;
+        if (body.trim() === config.sha) {
+          return config;
+        } else {
+          return sleep().then(check);
+        }
       });
   };
 
@@ -49,16 +58,5 @@ module.exports = config => {
     setTimeout(resolve, SLEEP_MS);
   });
 
-  return check()
-    .catch(error => {
-      return sleep().then(check);
-    })
-    .then(ready => {
-      if (ready) {
-        config.url = baseURL;
-        return config;
-      } else {
-        return sleep().then(check);
-      }
-    });
+  return check();
 };
