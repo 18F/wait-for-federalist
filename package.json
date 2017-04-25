@@ -6,7 +6,9 @@
   "scripts": {
     "test": "mocha"
   },
-  "keywords": ["federalist"],
+  "keywords": [
+    "federalist"
+  ],
   "author": "Shawn Allen <shawn.allen@gsa.gov>",
   "license": "ISC",
   "dependencies": {
