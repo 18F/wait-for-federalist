@@ -5,7 +5,7 @@ const PROD_BRANCH = 'master';
 const PROD_BASEURL = 'https://federalist-proxy.app.cloud.gov/site/';
 const PREVIEW_BASEURL = 'https://federalist.fr.cloud.gov/preview/';
 const COMMIT_PATH = 'commit.txt';
-const TIMEOUT_S = 300; // 5 minutes
+const TIMEOUT_S = 60; // 5 minutes
 const SLEEP_MS = 2000;
 
 module.exports = config => {
@@ -33,10 +33,12 @@ module.exports = config => {
   const start = Date.now();
 
   const check = () => {
-    const elapsed = (Date.now() - start) / 1e6;
-    if (elapsed > TIMEOUT_S) {
+    const seconds = (Date.now() - start) / 1000;
+    if (seconds > TIMEOUT_S) {
       console.error('Failed after %s seconds', TIMEOUT_S);
       return process.exit(1);
+    } else {
+      // console.warn('elapsed:', seconds);
     }
     // console.warn('fetching:', commitURL);
     return fetch(commitURL)
