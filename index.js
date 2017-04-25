@@ -21,15 +21,13 @@ module.exports = config => {
 
   const repo = [config.user, config.repo].join('/').toLowerCase();
 
-  var url = (config.branch === 'master')
+  const baseURL = (config.branch === 'master')
     ? PROD_BASEURL + repo
     : PREVIEW_BASEURL + repo + '/' + config.branch;
 
-  console.warn('testing site URL:', url);
+  console.warn('testing site URL:', baseURL);
 
-  url += '/' + COMMIT_PATH;
-
-  console.warn('Fetching Federalist commit data...');
+  const commitURL = baseURL + '/' + COMMIT_PATH;
 
   var tries = 0;
 
@@ -38,8 +36,8 @@ module.exports = config => {
       console.error('Failed after %d tries', MAX_TRIES);
       return process.exit(1);
     }
-    // console.warn('fetching:', url);
-    return fetch(url)
+    // console.warn('fetching:', commitURL);
+    return fetch(commitURL)
       .then(res => res.text())
       .then(body => {
         return body.trim() === config.sha;
@@ -57,7 +55,7 @@ module.exports = config => {
     })
     .then(ready => {
       if (ready) {
-        config.url = url;
+        config.url = baseURL;
         return config;
       } else {
         return sleep().then(check);
