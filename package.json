@@ -1,6 +1,6 @@
 {
   "name": "wait-for-federalist",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Wait for Federalist to build your thing.",
   "main": "index.js",
   "bin": {
