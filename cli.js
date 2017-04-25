@@ -10,7 +10,7 @@ wait(meta())
     process.exit(1);
   })
   .then(data => {
-    console.warn('Federalist built:', data);
-    process.env.SITE_URL = data.url;
+    console.warn('Federalist is ready to test at:');
+    console.log(data.url);
     process.exit(0);
   });
