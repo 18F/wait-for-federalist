@@ -1,0 +1,15 @@
+{
+  "name": "wait-for-federalist",
+  "version": "0.1.0",
+  "description": "Wait for Federalist to build your thing.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": ["federalist"],
+  "author": "Shawn Allen <shawn.allen@gsa.gov>",
+  "license": "ISC",
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1"
+  }
+}
