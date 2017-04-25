@@ -11,7 +11,7 @@ wait(meta())
     process.exit(1);
   })
   .then(data => {
-    console.warn('Federalist built SHA:', data.sha);
+    console.warn('Federalist built:', data);
     env.SITE_URL = data.url;
     process.exit(0);
   });
