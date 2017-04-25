@@ -3,6 +3,15 @@ A utility to wait for Federalist builds before running CI tests, and tell your b
 
 :warning: Currently this only works on Circle CI, but could be easily modified to accommodate other services. See [metadata.js](metadata.js) for how this is currently done.
 
+## Install
+You can install it with npm or [Yarn](https://yarnpkg.org):
+
+```sh
+npm install --save-dev wait-for-federalist
+# or with Yarn:
+yarn add wait-for-federalist
+```
+
 ## CLI
 The `wait-for-federalist` CLI performns the following steps:
 
